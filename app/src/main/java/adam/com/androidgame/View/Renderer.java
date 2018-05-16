@@ -14,6 +14,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         Log.e("Debug", "Cool ce");
+        gl.glClearColor(0,1,0,1);
     }
 
     @Override
@@ -24,5 +25,6 @@ public class Renderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         Log.e("Debug", "Cool draw!");
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     }
 }
