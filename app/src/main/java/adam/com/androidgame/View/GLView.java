@@ -11,15 +11,18 @@ import android.util.AttributeSet;
 public class GLView extends GLSurfaceView {
     public GLView(Context context) {
         super(context);
-        doRender();
+        doInit();
     }
 
     public GLView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        doRender();
+        doInit();
     }
 
-    private void doRender(){
+    private void doInit(){
+        // Use GLES 2.0
+        setEGLContextClientVersion(2);
         this.setRenderer(new adam.com.androidgame.View.Renderer());
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 }
