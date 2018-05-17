@@ -8,6 +8,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import adam.com.androidgame.Model.DataAccess.AssetRepository;
+import adam.com.androidgame.Model.Model;
 import adam.com.androidgame.Model.Triangle;
 
 /**
@@ -19,6 +20,9 @@ public class Renderer implements GLSurfaceView.Renderer {
     private int vertexShader;
     private int colorShader;
     private int program;
+
+    private Model m = new Model();
+    private Triangle t = new Triangle();
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -48,8 +52,13 @@ public class Renderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-        Triangle t = new Triangle();
+        m.draw(program);
+
         t.draw(program);
+        t.addToX(.002f);
+        if(t.isOffScreen()){
+            t = new Triangle();
+        }
     }
 
     private int loadShader(String name, int type){

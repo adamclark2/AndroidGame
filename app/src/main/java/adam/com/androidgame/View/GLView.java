@@ -23,6 +23,6 @@ public class GLView extends GLSurfaceView {
         // Use GLES 2.0
         setEGLContextClientVersion(2);
         this.setRenderer(new adam.com.androidgame.View.Renderer());
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        // setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 }

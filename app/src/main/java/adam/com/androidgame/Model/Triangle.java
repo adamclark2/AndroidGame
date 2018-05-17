@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Random;
 
 /**
  * Created by Adam Clark on 5/16/2018.
@@ -19,10 +20,11 @@ public class Triangle {
     private float color[] = {1.0f, 0.0f, 0.0f, 1.0f};
 
     public Triangle(){
+        Random r = new Random();
         float[] cordinates = {
-                0.0f,  0.622008459f, 0.0f, // top
-                -0.5f, -0.311004243f, 0.0f, // bottom left
-                0.5f, -0.311004243f, 0.0f  // bottom right
+                r.nextFloat() * 2 - 1,  r.nextFloat() * 2 - 1 , r.nextFloat() * 2 - 1, // top
+                r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, // bottom left
+                r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1  // bottom right
         };
 
         ByteBuffer bb = ByteBuffer.allocateDirect(4 * 9);
@@ -36,8 +38,32 @@ public class Triangle {
         return floatBuffer;
     }
 
+    public void addToX(float x){
+        addToEach(x,0,0);
+    }
+
+    private void addToEach(float x, float y, float z){
+        for(int i = 0; i < 9;i++) {
+            switch (i % 3) {
+                case 0:
+                    floatBuffer.put(i, floatBuffer.get(i) + x);
+                    break;
+                case 1:
+                    floatBuffer.put(i, floatBuffer.get(i) + y);
+                    break;
+                case 2:
+                    floatBuffer.put(i, floatBuffer.get(i) + z);
+                    break;
+            }
+        }
+    }
+
     public float[] getColor(){
         return color;
+    }
+
+    public void setColor(float[] color){
+        this.color = color;
     }
 
     public void draw(int program){
@@ -62,5 +88,15 @@ public class Triangle {
         // Let's Draw!
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
         GLES20.glDisableVertexAttribArray(pos);
+    }
+
+    public boolean isOffScreen(){
+        for(int i = 0; i < 9;i++){
+            if(floatBuffer.get(i) > 1 || floatBuffer.get(i) < -1){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
