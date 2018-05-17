@@ -11,25 +11,9 @@ import java.util.Scanner;
  */
 
 public class ShaderClassPathDao {
+    private StringClasspathDao dao = new StringClasspathDao();
+
     public String getShaderByName(String name){
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream(name);
-
-        try {
-            Scanner sc = new Scanner(is);
-
-            StringBuilder bldr = new StringBuilder();
-            while (sc.hasNextLine()){
-                bldr.append(sc.nextLine());
-                bldr.append("\n");
-            }
-
-            sc.close();
-            is.close();
-            return bldr.toString();
-
-        }catch (Exception e){
-            Log.e("Shader Not Found", name, e);
-            return null;
-        }
+        return dao.getStringFromClasspath(name);
     }
 }

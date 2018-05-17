@@ -21,7 +21,7 @@ public class Renderer implements GLSurfaceView.Renderer {
     private int colorShader;
     private int program;
 
-    private Model m = new Model();
+    private Model m = AssetRepository.getInstance().loadModel("hello.mod");
     private Triangle t = new Triangle();
 
     @Override

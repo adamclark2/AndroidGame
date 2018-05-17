@@ -5,7 +5,9 @@ import android.opengl.GLES20;
 import java.util.HashMap;
 import java.util.Map;
 
+import adam.com.androidgame.Model.DataAccess.DAO.ModelClassPathDao;
 import adam.com.androidgame.Model.DataAccess.DAO.ShaderClassPathDao;
+import adam.com.androidgame.Model.Model;
 
 /**
  * Created by Adam Clark on 5/16/2018.
@@ -19,6 +21,7 @@ public class AssetRepository {
 
     /// DAO's
     private ShaderClassPathDao dao = new ShaderClassPathDao();
+    private ModelClassPathDao modelDao = new ModelClassPathDao();
 
     private AssetRepository(){
 
@@ -40,5 +43,9 @@ public class AssetRepository {
         }
 
         return assetRepository;
+    }
+
+    public Model loadModel(String name){
+        return modelDao.getModel(name);
     }
 }
