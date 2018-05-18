@@ -7,6 +7,8 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
+import adam.com.androidgame.Model.DataAccess.ProgramRepository;
+
 /**
  * Created by Adam Clark on 5/16/2018.
  */
@@ -24,10 +26,13 @@ public class Triangle {
         float[] cordinates = {
                 r.nextFloat() * 2 - 1,  r.nextFloat() * 2 - 1 , r.nextFloat() * 2 - 1, // top
                 r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, // bottom left
-                r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1  // bottom right
+                r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1,  // bottom right
+                r.nextFloat() * 2 - 1,  r.nextFloat() * 2 - 1 , r.nextFloat() * 2 - 1, // top
+                r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, // bottom left
+                r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1,  // bottom right
         };
 
-        ByteBuffer bb = ByteBuffer.allocateDirect(4 * 9);
+        ByteBuffer bb = ByteBuffer.allocateDirect(4 * 18);
         bb.order(ByteOrder.nativeOrder());
         floatBuffer = bb.asFloatBuffer();
         floatBuffer.put(cordinates);
@@ -66,28 +71,16 @@ public class Triangle {
         this.color = color;
     }
 
-    public void draw(int program){
+    public void draw(){
+        Program p = ProgramRepository.getInstance().getProgramByName("flatColor");
+        int program = p.getProgramId();
         GLES20.glUseProgram(program);
 
-        // Enable vertex shader position attribute
-        int pos = GLES20.glGetAttribLocation(program, "vPosition");
-        GLES20.glEnableVertexAttribArray(pos);
-        GLES20.glVertexAttribPointer(
-                pos,
-                CORDINATES_PER_VERTEX,
-                GLES20.GL_FLOAT,
-                false,
-                SIZE_OF_FLOAT * VERTICES,
-                getFloatBuffer()
-        );
-
-        // Set Color
-        int colorParam = GLES20.glGetUniformLocation(program, "vColor");
-        GLES20.glUniform4fv(colorParam, 1, getColor(), 0);
+        p.setVertices(getFloatBuffer());
+        p.setParameters("color", getColor());
 
         // Let's Draw!
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
-        GLES20.glDisableVertexAttribArray(pos);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
     }
 
     public boolean isOffScreen(){

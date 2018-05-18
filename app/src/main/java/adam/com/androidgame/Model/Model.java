@@ -25,9 +25,9 @@ public class Model {
         triangles = tri.toArray(new Triangle[0]);
     }
 
-    public void draw(int program){
+    public void draw(){
         for(Triangle t : triangles){
-            t.draw(program);
+            t.draw();
         }
     }
 }
