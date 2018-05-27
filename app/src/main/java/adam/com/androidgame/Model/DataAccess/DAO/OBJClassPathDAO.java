@@ -69,6 +69,8 @@ public class OBJClassPathDAO {
         }
         sc.close();
 
+        final float[] val = new float[1];
+        val[0] = 0;
         return new DrawableThing() {
             @Override
             public void draw() {
@@ -97,6 +99,8 @@ public class OBJClassPathDAO {
                     GLES20.glUseProgram(program);
 
                     p.setVertices(toFloatBuffer(corrd));
+                    int xOff = GLES20.glGetAttribLocation(program, "xOff");
+                    GLES20.glVertexAttrib1f(xOff, val[0]);
                     p.setParameters("color", loadMaterial(r, faceToMaterial.get(index)));
 
                     // Let's Draw!
@@ -106,6 +110,11 @@ public class OBJClassPathDAO {
                     if (err != GLES20.GL_NO_ERROR) {
                         Log.e("GL ERR", "NUMBER " + err);
                     }
+
+                    if(val[0] > 1){
+                        val[0] = -1;
+                    }
+                    val[0] += 0.002f;
                     index++;
                 }
             }
