@@ -10,4 +10,5 @@ public interface Program {
     public int getProgramId();
     public void setParameters(String paramName, float[] value);
     public void setVertices(FloatBuffer vertices);
+    public void doneDrawing();
 }

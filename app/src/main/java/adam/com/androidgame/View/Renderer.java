@@ -11,6 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import adam.com.androidgame.Model.DataAccess.AssetRepository;
 import adam.com.androidgame.Model.DataAccess.ProgramRepository;
+import adam.com.androidgame.Model.DrawableThing;
 import adam.com.androidgame.Model.Model;
 import adam.com.androidgame.Model.Program;
 import adam.com.androidgame.Model.Triangle;
@@ -23,6 +24,7 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     private Model m = AssetRepository.getInstance().loadModel("hello.mod");
     private Triangle t = new Triangle();
+    DrawableThing tt = AssetRepository.getInstance().loadDrawModel("modelColor.obj");
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -42,14 +44,27 @@ public class Renderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-        m.draw();
+        boolean done = false;
+        int err;
+        while (!done){
+            err = GLES20.glGetError();
+            if(err != GLES20.GL_NO_ERROR){
+                Log.e("GLES ERROR", "NUMBER: " + err);
+            }else{
+                done = true;
+            }
+        }
 
-        t.draw();
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        //m.draw();
+
+        //t.draw();
         t.addToX(.002f);
         if(t.isOffScreen()){
             t = new Triangle();
         }
+
+        tt.draw();
     }
 
     private int loadShader(String name, int type){
@@ -104,6 +119,11 @@ public class Renderer implements GLSurfaceView.Renderer {
                         4 * 3,
                         vertices
                 );
+            }
+
+            @Override
+            public void doneDrawing(){
+                GLES20.glDisableVertexAttribArray(GLES20.glGetAttribLocation(program, "vPosition"));
             }
         };
 

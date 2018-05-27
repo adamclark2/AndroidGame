@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import adam.com.androidgame.Model.DataAccess.DAO.ModelClassPathDao;
+import adam.com.androidgame.Model.DataAccess.DAO.OBJClassPathDAO;
 import adam.com.androidgame.Model.DataAccess.DAO.ShaderClassPathDao;
+import adam.com.androidgame.Model.DrawableThing;
 import adam.com.androidgame.Model.Model;
 
 /**
@@ -22,6 +24,7 @@ public class AssetRepository {
     /// DAO's
     private ShaderClassPathDao dao = new ShaderClassPathDao();
     private ModelClassPathDao modelDao = new ModelClassPathDao();
+    private OBJClassPathDAO objClassPathDAO = new OBJClassPathDAO();
 
     private AssetRepository(){
 
@@ -47,5 +50,9 @@ public class AssetRepository {
 
     public Model loadModel(String name){
         return modelDao.getModel(name);
+    }
+
+    public DrawableThing loadDrawModel(String name){
+        return objClassPathDAO.loadModel(name);
     }
 }
